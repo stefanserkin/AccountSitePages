@@ -1,0 +1,84 @@
+<template>
+<div class="c-container">
+        <lightning-layout multiple-rows="true">
+            <!-- BANNER IMAGE -->
+            <lightning-layout-item padding="around-small" size="12">
+                <img src={headerImageUrl} class="header-image" />
+            </lightning-layout-item>
+
+            <!-- HEADER -->
+            <lightning-layout-item padding="around-small" size="12">
+                <div class="page-section page-header">
+                    <h2 class="slds-text-heading_large">
+                        {pageName}
+                    </h2>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item padding="around-small" size="12">
+                <lightning-layout>
+                    <!-- LEFT COLUMN -->
+                    <lightning-layout-item padding="around-small" size="3">
+                        <div class="page-section page-right">
+                            <h2>Blurb</h2>
+                            <p>
+                                Subway tile leggings tbh affogato ugh yr pitchfork street art etsy mukbang slow-carb gorpcore beard freegan chambray. Irony yr vice vape, hammock raw denim tumblr activated charcoal. Kogi lumbersexual ramps, taxidermy raw denim synth pinterest narwhal adaptogen shabby chic gochujang knausgaard hella portland forage. Vibecession shaman humblebrag pickled, JOMO sustainable activated charcoal keffiyeh waistcoat. Praxis single-origin coffee hashtag DSA 8-bit. Meh same tousled small batch crucifix.
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- MAIN COLUMN -->
+                    <lightning-layout-item padding="around-small" size="6">
+                        <div class="page-section page-main">
+                            <h2>Main</h2>
+                            <lightning-formatted-rich-text 
+                                value={bodyContent}
+                            ></lightning-formatted-rich-text>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- RIGHT COLUMN -->
+                    <lightning-layout-item padding="around-small" size="3">
+                        <div class="page-section page-right">
+                            <!-- GUEST PASS FORM -->
+                            <div if:true={showGuestPassForm} class="slds-var-p-bottom_large">
+                                <h2 class="slds-text-heading_small">Come find out what we're all about!</h2>
+                                <div class="slds-var-m-around_medium">
+                                    <lightning-input type="text" label="First Name" onchange={handleFirstNameChange}></lightning-input>
+                                    <lightning-input type="text" label="Last Name" onchange={handleLastNameChange}></lightning-input>
+                                    <lightning-input type="email" label="Email address" placeholder="type here..."></lightning-input>
+                                    <lightning-input type="tel" label="Phone field with pattern matching" name="phone3" placeholder="343-343-3434" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>
+                                    <lightning-button variant="brand" label="Submit" onclick={handleFormSubmission} class="slds-var-m-left_medium"></lightning-button>
+                                </div>
+                            </div>
+
+                            <!-- RESOURCES -->
+                            <div if:true={showPublicFiles}>
+                                <h2 class="slds-text-heading_small">Resources</h2>
+                                <template for:each={resources} for:item="res">
+                                    <lightning-button 
+                                        key={res.Id} 
+                                        variant="base" 
+                                        label={res.Name} 
+                                        title={res.Name} 
+                                        data-target-behavior={res.targetBehavior} 
+                                        data-url={res.Resource_URL__c}
+                                        onclick={handleGoToResource} 
+                                        class="slds-m-left_x-small"
+                                    ></lightning-button>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+
+            <!-- FOOTER -->
+            <lightning-layout-item flexibility="auto" padding="around-small" size="12">
+                <div class="page-footer page-section">
+                    <h2>Footer</h2>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>
