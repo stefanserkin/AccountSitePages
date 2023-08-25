@@ -25,9 +25,11 @@
                     <!-- LEFT COLUMN -->
                     <lightning-layout-item padding="around-small" size="3">
                         <div class="page-section page-right">
-                            <h2>Blurb</h2>
+                            <h2>Sidebar Content</h2>
                             <p>
-                                Subway tile leggings tbh affogato ugh yr pitchfork street art etsy mukbang slow-carb gorpcore beard freegan chambray. Irony yr vice vape, hammock raw denim tumblr activated charcoal. Kogi lumbersexual ramps, taxidermy raw denim synth pinterest narwhal adaptogen shabby chic gochujang knausgaard hella portland forage. Vibecession shaman humblebrag pickled, JOMO sustainable activated charcoal keffiyeh waistcoat. Praxis single-origin coffee hashtag DSA 8-bit. Meh same tousled small batch crucifix.
+                                <lightning-formatted-rich-text 
+                                    value={sidebarContent}
+                                ></lightning-formatted-rich-text>
                             </p>
                         </div>
                     </lightning-layout-item>
@@ -35,7 +37,7 @@
                     <!-- MAIN COLUMN -->
                     <lightning-layout-item padding="around-small" size="6">
                         <div class="page-section page-main">
-                            <h2>Main</h2>
+                            <h2>Body Content</h2>
                             <lightning-formatted-rich-text 
                                 value={bodyContent}
                             ></lightning-formatted-rich-text>

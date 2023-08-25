@@ -7,6 +7,7 @@ import NAME_FIELD from '@salesforce/schema/Account_Site_Page__c.Name';
 import ACTIVE_FIELD from '@salesforce/schema/Account_Site_Page__c.Active__c';
 import SHOW_FILES_FIELD from '@salesforce/schema/Account_Site_Page__c.Show_Public_Files__c';
 import SHOW_GUESTPASSES_FIELD from '@salesforce/schema/Account_Site_Page__c.Show_Guest_Pass_Form__c';
+import SIDEBAR_CONTENT_FIELD from '@salesforce/schema/Account_Site_Page__c.Sidebar_Content__c';
 import BODY_CONTENT_FIELD from '@salesforce/schema/Account_Site_Page__c.Body_Content__c';
 import HEADER_IMAGE_FIELD from '@salesforce/schema/Account_Site_Page__c.Header_Image_URL__c';
 
@@ -15,6 +16,7 @@ const FIELDS = [
     ACTIVE_FIELD,
     SHOW_FILES_FIELD,
     SHOW_GUESTPASSES_FIELD,
+    SIDEBAR_CONTENT_FIELD,
     BODY_CONTENT_FIELD,
     HEADER_IMAGE_FIELD
 ];
@@ -31,6 +33,7 @@ export default class AccountSitePageBody extends LightningElement {
     showPublicFiles = false;
     showGuestPassForm = false;
     guestPassFormIsSubmitted = false;
+    sidebarContent;
     bodyContent;
     headerImageUrl;
     wiredResources = [];
@@ -74,6 +77,7 @@ export default class AccountSitePageBody extends LightningElement {
             this.isActivePage = this.accountSitePage.fields.Active__c.value;
             this.showPublicFiles = this.accountSitePage.fields.Show_Public_Files__c.value;
             this.showGuestPassForm = this.accountSitePage.fields.Show_Guest_Pass_Form__c.value;
+            this.sidebarContent = this.accountSitePage.fields.Sidebar_Content__c.value;
             this.bodyContent = this.accountSitePage.fields.Body_Content__c.value;
             this.headerImageUrl = this.accountSitePage.fields.Header_Image_URL__c.value;
         }
