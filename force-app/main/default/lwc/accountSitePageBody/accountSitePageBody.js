@@ -1,21 +1,14 @@
 import { LightningElement, api, wire } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getRecord } from 'lightning/uiRecordApi';
 import getSitePageResources from '@salesforce/apex/AccountSitePageController.getSitePageResources';
+import createGuestPass from '@salesforce/apex/AccountSitePageController.createGuestPass';
 import NAME_FIELD from '@salesforce/schema/Account_Site_Page__c.Name';
 import ACTIVE_FIELD from '@salesforce/schema/Account_Site_Page__c.Active__c';
 import SHOW_FILES_FIELD from '@salesforce/schema/Account_Site_Page__c.Show_Public_Files__c';
 import SHOW_GUESTPASSES_FIELD from '@salesforce/schema/Account_Site_Page__c.Show_Guest_Pass_Form__c';
 import BODY_CONTENT_FIELD from '@salesforce/schema/Account_Site_Page__c.Body_Content__c';
 import HEADER_IMAGE_FIELD from '@salesforce/schema/Account_Site_Page__c.Header_Image_URL__c';
-
-import LEAD_OBJECT from '@salesforce/schema/Lead';
-import SOURCE_FIELD from '@salesforce/schema/Lead.LeadSource';
-import STATUS_FIELD from '@salesforce/schema/Lead.Status';
-import FIRSTNAME_FIELD from '@salesforce/schema/Lead.FirstName';
-import LASTNAME_FIELD from '@salesforce/schema/Lead.LastName';
-import EMAIL_FIELD from '@salesforce/schema/Lead.Email';
-import PHONE_FIELD from '@salesforce/schema/Lead.Phone';
-import COMPANY_FIELD from '@salesforce/schema/Lead.Company';
 
 const FIELDS = [
     NAME_FIELD,
@@ -37,6 +30,7 @@ export default class AccountSitePageBody extends LightningElement {
     isActivePage = false;
     showPublicFiles = false;
     showGuestPassForm = false;
+    guestPassFormIsSubmitted = false;
     bodyContent;
     headerImageUrl;
     wiredResources = [];
@@ -47,6 +41,10 @@ export default class AccountSitePageBody extends LightningElement {
     lastName;
     email;
     phone;
+
+    get thankYouMessage() {
+        return `Thanks for your interest in Asphalt Green! Check your email for your unique pass and information on how to use it. We look forward to seeing you!`
+    }
 
     /**
      * Get account site page record with page settings/controls
@@ -125,6 +123,7 @@ export default class AccountSitePageBody extends LightningElement {
     }
 
     handleFormSubmission() {
+        this.isLoading = true;
         const allValid = [...this.template.querySelectorAll('lightning-input')]
             .reduce((validSoFar, inputFields) => {
                 inputFields.reportValidity();
@@ -132,20 +131,33 @@ export default class AccountSitePageBody extends LightningElement {
             }, true);
 
         if (allValid) {
-            const fields = {};
-            fields[SOURCE_FIELD.fieldApiName] = 'Affiliation Partnership';
-            fields[STATUS_FIELD.fieldApiName] = 'New - Not Contacted';
-            fields[FIRSTNAME_FIELD.fieldApiName] = this.firstName;
-            fields[LASTNAME_FIELD.fieldApiName] = this.lastName;
-            fields[EMAIL_FIELD.fieldApiName] = this.email;
-            fields[PHONE_FIELD.fieldApiName] = this.phone;
-            fields[FIRSTNAME_FIELD.fieldApiName] = this.firstName;
-            fields[FIRSTNAME_FIELD.fieldApiName] = this.firstName;
-
-            const recordInput = {
-                apiName: LEAD_OBJECT.objectApiName,
-                fields
-            };
+            createGuestPass({
+                firstName: this.firstName,
+                lastName: this.lastName,
+                email: this.email,
+                phone: this.phone,
+                sitePageId: this.recordId
+            }).then((result) => {
+                console.log(result);
+                this.guestPassFormIsSubmitted = true;
+                const event = new ShowToastEvent({
+                    title: 'You\'re all set!',
+                    message: this.thankYouMessage,
+                    variant: 'success'
+                });
+                this.dispatchEvent(event);
+                this.isLoading = false;
+            }).catch((error) => {
+                this.error = error;
+                console.error(this.error);
+                const event = new ShowToastEvent({
+                    title: 'Hmm... something went wrong',
+                    message: this.getErrorMessage(),
+                    variant: 'error'
+                });
+                this.dispatchEvent(event);
+                this.isLoading = false;
+            });
         }
     }
 
@@ -157,6 +169,20 @@ export default class AccountSitePageBody extends LightningElement {
     handleGoToResource(event) {
         const curResource = event.currentTarget.dataset;
         window.open(curResource.url, curResource.targetBehavior);
+    }
+
+    /**
+     * Utils
+     */
+
+    getErrorMessage() {
+        let message = 'Unknown error';
+        if (Array.isArray(this.error.body)) {
+            message = this.error.body.map(e => e.message).join(', ');
+        } else if (typeof this.error.body.message === 'string') {
+            message = this.error.body.message;
+        }
+        return message;
     }
 
 }

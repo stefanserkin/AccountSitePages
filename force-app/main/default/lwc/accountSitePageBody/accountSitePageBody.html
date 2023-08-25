@@ -1,5 +1,10 @@
 <template>
-<div class="c-container">
+    <div class="c-container">
+        <!-- LIGHTNING SPINNER ON LOAD -->
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </template>
+
         <lightning-layout multiple-rows="true">
             <!-- BANNER IMAGE -->
             <lightning-layout-item padding="around-small" size="12">
@@ -39,35 +44,44 @@
 
                     <!-- RIGHT COLUMN -->
                     <lightning-layout-item padding="around-small" size="3">
-                        <div class="page-section page-right">
-                            <!-- GUEST PASS FORM -->
-                            <div if:true={showGuestPassForm} class="slds-var-p-bottom_large">
-                                <h2 class="slds-text-heading_small">Come find out what we're all about!</h2>
+                        <!-- GUEST PASS FORM -->
+                        <div class="page-section page-right slds-var-m-bottom_large" if:true={showGuestPassForm}>
+                            <template if:false={guestPassFormIsSubmitted}>
+                                <h2 class="slds-text-heading_small">We'd love to see you!</h2>
                                 <div class="slds-var-m-around_medium">
-                                    <lightning-input type="text" label="First Name" onchange={handleFirstNameChange}></lightning-input>
-                                    <lightning-input type="text" label="Last Name" onchange={handleLastNameChange}></lightning-input>
-                                    <lightning-input type="email" label="Email address" placeholder="type here..."></lightning-input>
-                                    <lightning-input type="tel" label="Phone field with pattern matching" name="phone3" placeholder="343-343-3434" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>
-                                    <lightning-button variant="brand" label="Submit" onclick={handleFormSubmission} class="slds-var-m-left_medium"></lightning-button>
+                                    <lightning-input type="text" label="First Name" onchange={handleFirstNameChange} required></lightning-input>
+                                    <lightning-input type="text" label="Last Name" onchange={handleLastNameChange} required></lightning-input>
+                                    <lightning-input type="email" label="Email Address" placeholder="email@domain.com" onchange={handleEmailChange} required></lightning-input>
+                                    <lightning-input type="tel" label="Phone" name="phone" placeholder="212-123-1234" onchange={handlePhoneChange} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>
+                                    <div class="slds-var-m-top_small">
+                                        <lightning-button variant="brand" label="Claim Guest Pass" onclick={handleFormSubmission}></lightning-button>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
+                            <!-- THANK YOU PAGE -->
+                            <template if:true={guestPassFormIsSubmitted}>
+                                <div class="slds-var-m-around_medium">
+                                    <h2 class="slds-text-heading_small">You're all set!</h2>
+                                    <p>{thankYouMessage}</p>
+                                </div>
+                            </template>
+                        </div>
 
-                            <!-- RESOURCES -->
-                            <div if:true={showPublicFiles}>
-                                <h2 class="slds-text-heading_small">Resources</h2>
-                                <template for:each={resources} for:item="res">
-                                    <lightning-button 
-                                        key={res.Id} 
-                                        variant="base" 
-                                        label={res.Name} 
-                                        title={res.Name} 
-                                        data-target-behavior={res.targetBehavior} 
-                                        data-url={res.Resource_URL__c}
-                                        onclick={handleGoToResource} 
-                                        class="slds-m-left_x-small"
-                                    ></lightning-button>
-                                </template>
-                            </div>
+                        <!-- RESOURCES -->
+                        <div class="page-section page-right" if:true={showPublicFiles}>
+                            <h2 class="slds-text-heading_small">Resources</h2>
+                            <template for:each={resources} for:item="res">
+                                <lightning-button 
+                                    key={res.Id} 
+                                    variant="base" 
+                                    label={res.Name} 
+                                    title={res.Name} 
+                                    data-target-behavior={res.targetBehavior} 
+                                    data-url={res.Resource_URL__c}
+                                    onclick={handleGoToResource} 
+                                    class="slds-m-left_x-small"
+                                ></lightning-button>
+                            </template>
                         </div>
                     </lightning-layout-item>
                 </lightning-layout>

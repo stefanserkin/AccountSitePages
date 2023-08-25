@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Type__c</fullName>
-    <description>The type of page. Governs the layout template for the page.</description>
+    <fullName>Status__c</fullName>
+    <defaultValue>&quot;Valid&quot;</defaultValue>
     <externalId>false</externalId>
-    <inlineHelpText>The type of page. Governs the layout template for the page.</inlineHelpText>
-    <label>Type</label>
+    <label>Status</label>
     <required>true</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
@@ -14,14 +13,19 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Affiliation</fullName>
+                <fullName>Valid</fullName>
                 <default>false</default>
-                <label>Affiliation</label>
+                <label>Valid</label>
             </value>
             <value>
-                <fullName>Community Programs</fullName>
+                <fullName>Used</fullName>
                 <default>false</default>
-                <label>Community Programs</label>
+                <label>Used</label>
+            </value>
+            <value>
+                <fullName>Expired</fullName>
+                <default>false</default>
+                <label>Expired</label>
             </value>
         </valueSetDefinition>
     </valueSet>

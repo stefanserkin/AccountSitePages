@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Page_URL__c</fullName>
+    <fullName>Header_Image_Preview__c</fullName>
     <externalId>false</externalId>
-    <formula>$CustomMetadata.External_Site_Setting__mdt.Default.Site_URL__c &amp; &quot;/&quot; &amp; CASESAFEID(Id)</formula>
+    <formula>IMAGE(Header_Image_URL__c, &quot;Header Image&quot;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <label>Page URL</label>
+    <label>Header Image Preview</label>
     <required>false</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
