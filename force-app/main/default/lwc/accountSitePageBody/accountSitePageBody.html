@@ -6,18 +6,24 @@
         </template>
 
         <lightning-layout multiple-rows="true">
-            <!-- BANNER IMAGE -->
-            <lightning-layout-item padding="around-small" size="12">
-                <img src={headerImageUrl} class="header-image" />
+            <!-- BANNER IMAGE WITH TITLE AND BLUR -->
+            <lightning-layout-item if:true={showPageTitle} padding="around-small" size="12">
+                <div class="header-container">
+                    <img src={headerImageUrl} class="header-image" />
+                    <div class="header-title slds-text-heading_large">{pageName}</div>
+                </div>
             </lightning-layout-item>
 
-            <!-- HEADER -->
-            <lightning-layout-item padding="around-small" size="12">
-                <div class="page-section page-header">
-                    <h2 class="slds-text-heading_large">
-                        {pageName}
-                    </h2>
+            <!-- BANNER IMAGE WITHOUT TITLE -->
+            <lightning-layout-item if:false={showPageTitle} padding="around-small" size="12">
+                <div class="header-container">
+                    <img src={headerImageUrl} style="width:100%" />
                 </div>
+            </lightning-layout-item>
+
+            <!-- GALLERY -->
+            <lightning-layout-item if:true={showImageGallery} padding="around-small" size="12">
+                <c-account-site-page-image-gallery></c-account-site-page-image-gallery>
             </lightning-layout-item>
 
             <lightning-layout-item padding="around-small" size="12">
@@ -70,7 +76,7 @@
                         </div>
 
                         <!-- RESOURCES -->
-                        <div class="page-section page-right" if:true={showPublicFiles}>
+                        <div class="page-section page-right" if:true={showResources}>
                             <h2 class="slds-text-heading_small slds-var-p-bottom_small">Resources</h2>
                             <ul>
                                 <template for:each={resources} for:item="res">

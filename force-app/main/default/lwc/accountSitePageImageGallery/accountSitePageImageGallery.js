@@ -1,6 +1,3 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement } from 'lwc';
 
-export default class AccountSitePageImageGallery extends LightningElement {
-    @api accountSitePageId;
-    @api layout;
-}
+export default class AccountSitePageImageGallery extends LightningElement {}
