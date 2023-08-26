@@ -71,19 +71,22 @@
 
                         <!-- RESOURCES -->
                         <div class="page-section page-right" if:true={showPublicFiles}>
-                            <h2 class="slds-text-heading_small">Resources</h2>
-                            <template for:each={resources} for:item="res">
-                                <lightning-button 
-                                    key={res.Id} 
-                                    variant="base" 
-                                    label={res.Name} 
-                                    title={res.Name} 
-                                    data-target-behavior={res.targetBehavior} 
-                                    data-url={res.Resource_URL__c}
-                                    onclick={handleGoToResource} 
-                                    class="slds-m-left_x-small"
-                                ></lightning-button>
-                            </template>
+                            <h2 class="slds-text-heading_small slds-var-p-bottom_small">Resources</h2>
+                            <ul>
+                                <template for:each={resources} for:item="res">
+                                    <li key={res.Id}>
+                                        <lightning-button 
+                                            variant="base" 
+                                            label={res.Name} 
+                                            title={res.Name} 
+                                            data-target-behavior={res.targetBehavior} 
+                                            data-url={res.Resource_URL__c}
+                                            onclick={handleGoToResource} 
+                                            class="slds-m-left_x-small"
+                                        ></lightning-button>
+                                    </li>
+                                </template>
+                            </ul>
                         </div>
                     </lightning-layout-item>
                 </lightning-layout>
